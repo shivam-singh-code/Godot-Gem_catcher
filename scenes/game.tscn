@@ -1,10 +1,15 @@
-[gd_scene load_steps=4 format=3 uid="uid://dgq4g3yy42ao7"]
+[gd_scene load_steps=7 format=3 uid="uid://dgq4g3yy42ao7"]
 
+[ext_resource type="Script" path="res://scenes/game.gd" id="1_3wtg0"]
 [ext_resource type="Texture2D" uid="uid://cogbbsh718m6c" path="res://assets/GameBg.png" id="1_82mmi"]
 [ext_resource type="PackedScene" uid="uid://d8d3b5i40cyx" path="res://scenes/paddle.tscn" id="2_pujmj"]
 [ext_resource type="PackedScene" uid="uid://bn7hnic6vi0b2" path="res://scenes/gem.tscn" id="3_c7rrr"]
+[ext_resource type="AudioStream" uid="uid://frwfl3mfnwny" path="res://assets/bgm_action_5.mp3" id="5_bx638"]
+[ext_resource type="AudioStream" uid="uid://c3g671emfmv2m" path="res://assets/spell1_0.wav" id="6_3xdbe"]
 
 [node name="Game" type="Node2D"]
+script = ExtResource("1_3wtg0")
+gem_scene = ExtResource("3_c7rrr")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(563, 329)
@@ -14,13 +19,30 @@ texture = ExtResource("1_82mmi")
 [node name="Paddle" parent="." instance=ExtResource("2_pujmj")]
 position = Vector2(545, 573)
 
-[node name="Gem" parent="." instance=ExtResource("3_c7rrr")]
-position = Vector2(427, 106)
-speed = 100.0
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
 
-[node name="Gem2" parent="." instance=ExtResource("3_c7rrr")]
-position = Vector2(679, 113)
+[node name="Label" type="Label" parent="."]
+offset_left = 24.0
+offset_top = 16.0
+offset_right = 134.0
+offset_bottom = 83.0
+theme_override_colors/font_color = Color(0.482353, 0.905882, 0.772549, 1)
+theme_override_colors/font_shadow_color = Color(0.87451, 0.262745, 0.313726, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 48
+text = "00000"
 
-[node name="Gem3" parent="." instance=ExtResource("3_c7rrr")]
-position = Vector2(256, 103)
-speed = 300.0
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_bx638")
+autoplay = true
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_3xdbe")
+
+[connection signal="area_entered" from="Paddle" to="." method="_on_paddle_area_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
